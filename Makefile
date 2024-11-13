@@ -6,3 +6,5 @@ build:
 clean:
 	rm -f $(TARGET)
 
+dev:
+	air
