@@ -8,3 +8,6 @@ clean:
 
 dev:
 	air
+
+docker:
+	docker-compose up -d

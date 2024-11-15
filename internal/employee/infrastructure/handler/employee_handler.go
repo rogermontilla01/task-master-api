@@ -30,7 +30,7 @@ func NewCronjobHandler(service interfaces.EmployeeService) ResultHandler {
 	}
 }
 
-func (h *employeeHandler) CreateEmployee(c *gin.Context) {
+func (e *employeeHandler) CreateEmployee(c *gin.Context) {
 	var employee dtos.EmployeeDto
 	if err := c.ShouldBindBodyWith(&employee, binding.JSON); err != nil {
 		log.Error().Caller().Err(err).Send()
@@ -38,25 +38,68 @@ func (h *employeeHandler) CreateEmployee(c *gin.Context) {
 		return
 	}
 
-	newEmployee, err := h.service.CreateEmployee(&employee)
-
+	newEmployee, err := e.service.CreateEmployee(&employee)
 	if err != nil {
 		log.Error().Caller().Err(err).Send()
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusCreated, newEmployee)
 }
 
-func (h *employeeHandler) GetEmployee(c *gin.Context) {
-	id := h.service.GetEmployee("test")
+func (e *employeeHandler) GetEmployee(c *gin.Context) {
+	id := c.Param("id")
 
-	c.JSON(http.StatusOK, id)
+	employee, err := e.service.GetEmployee(id)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, employee)
 }
 
-func (h *employeeHandler) RegisterRoutes(g *gin.RouterGroup) {
+func (e *employeeHandler) UpdateEmployee(c *gin.Context) {
+	id := c.Param("id")
+
+	var employee dtos.UpdateEmployeeDto
+	if err := c.ShouldBindBodyWith(&employee, binding.JSON); err != nil {
+		log.Error().Caller().Err(err).Send()
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	log.Printf("Employee data: %+v\n", employee)
+
+	updatedEmployee, err := e.service.UpdateEmployee(id, &employee)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, updatedEmployee)
+}
+
+func (e *employeeHandler) DeleteEmployee(c *gin.Context) {
+	id := c.Param("id")
+
+	err := e.service.DeleteEmployee(id)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Task deleted successfully"})
+}
+
+func (e *employeeHandler) RegisterRoutes(g *gin.RouterGroup) {
 	routes := g.Group("/employee")
-	routes.GET("/:id", h.GetEmployee)
-	routes.POST("", h.CreateEmployee)
+	routes.GET("/:id", e.GetEmployee)
+	routes.POST("", e.CreateEmployee)
+	routes.PUT("/:id", e.UpdateEmployee)
+	routes.DELETE("/:id", e.DeleteEmployee)
 }

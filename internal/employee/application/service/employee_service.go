@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"task-master-api/internal/employee/application/dtos"
 	"task-master-api/internal/employee/domain/interfaces"
 
@@ -20,23 +19,54 @@ func NewEmployeeService(
 	}
 }
 
-func (e *EmployeeService) GetEmployee(id string) string {
-	fmt.Println("call form employee service")
+func (e *EmployeeService) GetEmployee(id string) (employee *dtos.EmployeeDto, err error) {
+	log.Info().Str("id", id).Msg("Get employee")
 
-	return id
+	employeeDto, err := e.repository.GetEmployee(id)
+	if err != nil {
+		log.Error().Err(err).Msg("error getting employee")
+		return employeeDto, err
+	}
+
+	return employeeDto, nil
 }
 
 func (e *EmployeeService) CreateEmployee(employee *dtos.EmployeeDto) (*dtos.EmployeeDto, error) {
 	log.Info().Msg("Start employee creation")
 
-	dto, err := e.repository.CreateEmployee(employee)
+	employeeDto, err := e.repository.CreateEmployee(employee)
 	if err != nil {
 		log.Error().Err(err).Msg("error creating employee")
-		return dto, err
+		return employeeDto, err
 	}
 
 	log.Info().Msg("employee created")
 
-	return dto, nil
+	return employeeDto, nil
 
+}
+
+func (e *EmployeeService) UpdateEmployee(id string, employee *dtos.UpdateEmployeeDto) (*dtos.UpdateEmployeeDto, error) {
+
+	_, err := e.repository.UpdateEmployee(id, employee)
+	if err != nil {
+		log.Error().Err(err).Msg("error updating employee")
+		return nil, err
+	}
+
+	return employee, nil
+}
+
+func (e *EmployeeService) DeleteEmployee(id string) error {
+	log.Info().Str("id", id).Msg("Start employee deletion")
+
+	err := e.repository.DeleteEmployee(id)
+	if err != nil {
+		log.Error().Err(err).Msg("error deleting employee")
+		return err
+	}
+
+	log.Info().Msg("employee deleted")
+
+	return nil
 }
