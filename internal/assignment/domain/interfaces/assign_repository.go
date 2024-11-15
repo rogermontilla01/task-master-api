@@ -8,4 +8,5 @@ type AssignmentRepository interface {
 	CreateAssignment(*dtos.AssignmentDto) (*dtos.AssignmentDto, error)
 	DeleteAssignment(assignId string) error
 	UpdateAssignment(assignId string, update *dtos.UpdateAssignmentDto) (*dtos.UpdateAssignmentDto, error)
+	GetAllAssignmentsByEmployee(employeeId string) (*[]dtos.AssignmentDto, error)
 }

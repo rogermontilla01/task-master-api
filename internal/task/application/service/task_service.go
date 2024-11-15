@@ -84,3 +84,17 @@ func (t *TaskService) UpdateTask(id string, task *dtos.UpdateTaskDto) (*dtos.Upd
 
 	return updatedTask, nil
 }
+
+func (t *TaskService) GetAllTasksById(id string) (*[]dtos.TaskDto, error) {
+	log.Info().Msg("Getting all tasks by id")
+
+	tasks, err := t.repository.GetAllTasksById(id)
+	if err != nil {
+		log.Error().Err(err).Msg("Error getting all tasks by id")
+		return nil, err
+	}
+
+	log.Info().Msg("Tasks retrieved successfully")
+
+	return tasks, nil
+}

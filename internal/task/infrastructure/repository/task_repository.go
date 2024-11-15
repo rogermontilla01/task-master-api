@@ -168,6 +168,37 @@ func (t *TaskRepository) UpdateTask(id string, task *dtos.UpdateTaskDto) (update
 	return task, nil
 }
 
+func (t *TaskRepository) GetAllTasksById(id string) (*[]dtos.TaskDto, error) {
+	entities := []entities.TaskEntity{}
+
+	cursor, err := t.db.
+		Collection("tasks").
+		Find(context.TODO(), bson.M{"_id": id})
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	err = cursor.All(context.TODO(), &entities)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	allTasks := []dtos.TaskDto{}
+	for _, entity := range entities {
+		dto, err := t.EntityToDto(&entity)
+		if err != nil {
+			log.Error().Caller().Err(err).Send()
+			return nil, err
+		}
+
+		allTasks = append(allTasks, *dto)
+	}
+
+	return &allTasks, nil
+}
+
 func (t *TaskRepository) DtoToEntity(dto *dtos.TaskDto) (*entities.TaskEntity, error) {
 	newEntity := entities.TaskEntity{
 		Title:    dto.Title,

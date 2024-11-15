@@ -8,4 +8,5 @@ type TaskRepository interface {
 	CreateTask(task *dtos.TaskDto) (*dtos.TaskDto, error)
 	UpdateTask(id string, task *dtos.UpdateTaskDto) (*dtos.UpdateTaskDto, error)
 	DeleteTask(id string) error
+	GetAllTasksById(id string) (*[]dtos.TaskDto, error)
 }

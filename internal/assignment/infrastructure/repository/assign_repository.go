@@ -176,6 +176,43 @@ func (a *AssignmentRepository) UpdateAssignment(id string, assignment *dtos.Upda
 	return assignment, nil
 }
 
+func (a *AssignmentRepository) GetAllAssignmentsByEmployee(employeeId string) (*[]dtos.AssignmentDto, error) {
+	entities := []entities.AssignmentEntity{}
+
+	objectId, err := primitive.ObjectIDFromHex(employeeId)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	cursor, err := a.db.
+		Collection("assignments").
+		Find(context.TODO(), bson.M{"employeeId": objectId})
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	err = cursor.All(context.TODO(), &entities)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	allAssignments := []dtos.AssignmentDto{}
+	for _, entity := range entities {
+		assignmentDto, err := a.EntityToDto(&entity)
+		if err != nil {
+			log.Error().Caller().Err(err).Send()
+			return nil, err
+		}
+
+		allAssignments = append(allAssignments, *assignmentDto)
+	}
+
+	return &allAssignments, nil
+}
+
 func (a *AssignmentRepository) DtoToEntity(dto *dtos.AssignmentDto) (*entities.AssignmentEntity, error) {
 	assignmentEntity := entities.AssignmentEntity{
 		Duration: dto.Duration,
@@ -192,7 +229,7 @@ func (a *AssignmentRepository) DtoToEntity(dto *dtos.AssignmentDto) (*entities.A
 	}
 
 	if dto.EmployeeID != "" {
-		objectId, err := primitive.ObjectIDFromHex(dto.ID)
+		objectId, err := primitive.ObjectIDFromHex(dto.EmployeeID)
 		if err != nil {
 			log.Error().Caller().Err(err).Send()
 			return nil, err
@@ -202,7 +239,7 @@ func (a *AssignmentRepository) DtoToEntity(dto *dtos.AssignmentDto) (*entities.A
 	}
 
 	if dto.TaskID != "" {
-		objectId, err := primitive.ObjectIDFromHex(dto.ID)
+		objectId, err := primitive.ObjectIDFromHex(dto.TaskID)
 		if err != nil {
 			log.Error().Caller().Err(err).Send()
 			return nil, err

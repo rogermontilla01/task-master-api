@@ -1,6 +1,10 @@
 package dtos
 
-import "time"
+import (
+	"time"
+
+	"github.com/rs/zerolog/log"
+)
 
 type TaskDto struct {
 	ID        string    `json:"id"`
@@ -11,4 +15,14 @@ type TaskDto struct {
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	DeletedAt time.Time `json:"deletedAt,omitempty"`
+}
+
+func (t *TaskDto) GetDuration() (duration time.Duration, err error) {
+	availableTime, err := time.ParseDuration(t.Duration)
+	if err != nil {
+		log.Error().Err(err).Msg("error parsing duration time")
+		return duration, err
+	}
+
+	return availableTime, nil
 }
