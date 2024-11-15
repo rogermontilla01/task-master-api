@@ -1,0 +1,319 @@
+{
+	"info": {
+		"_postman_id": "89c76f48-fe98-41e8-8d34-27b3cd49f41a",
+		"name": "Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10563102"
+	},
+	"item": [
+		{
+			"name": "Get Employee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/employee/67341af0c833e2c96434e800",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"employee",
+						"67341af0c833e2c96434e800"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Name\": \"John Doe\",\n    \"Skills\": [\n        \"JavaScript\",\n        \"NodeJS\",\n        \"SQL\"\n    ],\n    \"AvailableHours\": \"72h30m0s\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/employee",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Employee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Skills\": [\n        \"JavaScript\",\n        \"NodeJS\",\n        \"React\",\n        \"SQL\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/employee/673682c7841eca1a412fdaf7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"employee",
+						"673682c7841eca1a412fdaf7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/employee/67368399e7780f6c1760680a",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"employee",
+						"67368399e7780f6c1760680a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Learning Mongo\",\n    \"duration\": \"2h30m0s\",\n    \"skills\": [\n        \"Mongo\"\n    ],\n    \"completed\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/task",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"duration\": \"3h30m0s\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/task/6736a0632e2177ca8636f57b",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"task",
+						"6736a0632e2177ca8636f57b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/task/6736a0632e2177ca8636f57b",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"task",
+						"6736a0632e2177ca8636f57b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/task/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"task",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/task/6736a0632e2177ca8636f57b",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"task",
+						"6736a0632e2177ca8636f57b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign Task",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskId\": \"67374d4a1c495a8583777470\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/assignment",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assignment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Assing By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/assignment/673741e0c78cbf637920c908",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assignment",
+						"673741e0c78cbf637920c908"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Assign",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/assignment/673741e0c78cbf637920c908",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assignment",
+						"673741e0c78cbf637920c908"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Assignments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/assignment/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assignment",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task Assigned",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/assignment/employee/673682c7841eca1a412fdaf7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"assignment",
+						"employee",
+						"673682c7841eca1a412fdaf7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
