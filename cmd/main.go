@@ -1,6 +1,7 @@
 package main
 
 import (
+	"task-master-api/internal/assignment"
 	"task-master-api/internal/common"
 	"task-master-api/internal/common/domain/interfaces"
 	"task-master-api/internal/config"
@@ -26,6 +27,7 @@ func main() {
 		config.Module,
 		employee.Module,
 		task.Module,
+		assignment.Module,
 		common.Module,
 
 		fx.Provide(

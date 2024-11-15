@@ -24,7 +24,7 @@ func NewTaskRepository(db *mongo.Database) interfaces.TaskRepository {
 func (t *TaskRepository) CreateTask(task *dtos.TaskDto) (*dtos.TaskDto, error) {
 	newEntity, err := t.DtoToEntity(task)
 	if err != nil {
-		log.Error().Err(err).Msg("Error converting dto to entity")
+		log.Error().Err(err).Msg("error converting dto to entity")
 		return nil, err
 	}
 
@@ -36,7 +36,7 @@ func (t *TaskRepository) CreateTask(task *dtos.TaskDto) (*dtos.TaskDto, error) {
 	if err == nil {
 		newEntity.ID = result.InsertedID.(primitive.ObjectID)
 	} else {
-		log.Error().Err(err).Msg("error creating")
+		log.Error().Err(err).Msg("error creating task")
 		return task, err
 	}
 
@@ -151,8 +151,8 @@ func (t *TaskRepository) UpdateTask(id string, task *dtos.UpdateTaskDto) (update
 		update["skills"] = task.Skills
 	}
 
-	if task.Completed != nil {
-		update["completed"] = task.Completed
+	if task.Status != nil {
+		update["status"] = task.Status
 	}
 
 	update["updatedAt"] = time.Now()
@@ -170,10 +170,10 @@ func (t *TaskRepository) UpdateTask(id string, task *dtos.UpdateTaskDto) (update
 
 func (t *TaskRepository) DtoToEntity(dto *dtos.TaskDto) (*entities.TaskEntity, error) {
 	newEntity := entities.TaskEntity{
-		Title:     dto.Title,
-		Duration:  dto.Duration,
-		Skills:    dto.Skills,
-		Completed: dto.Completed,
+		Title:    dto.Title,
+		Duration: dto.Duration,
+		Skills:   dto.Skills,
+		Status:   dto.Status,
 	}
 
 	if dto.ID != "" {
@@ -195,7 +195,7 @@ func (t *TaskRepository) EntityToDto(entity *entities.TaskEntity) (*dtos.TaskDto
 		Title:     entity.Title,
 		Duration:  entity.Duration,
 		Skills:    entity.Skills,
-		Completed: entity.Completed,
+		Status:    entity.Status,
 		CreatedAt: entity.CreatedAt,
 		UpdatedAt: entity.UpdatedAt,
 		DeletedAt: entity.DeletedAt,

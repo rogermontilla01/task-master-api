@@ -7,7 +7,7 @@ type TaskDto struct {
 	Title     string    `json:"title"`
 	Duration  string    `json:"duration,omitempty"`
 	Skills    []string  `json:"skills"`
-	Completed bool      `json:"completed"`
+	Status    string    `json:"status"`
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	DeletedAt time.Time `json:"deletedAt,omitempty"`

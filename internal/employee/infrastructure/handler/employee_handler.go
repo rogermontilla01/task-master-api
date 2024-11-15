@@ -51,7 +51,7 @@ func (e *employeeHandler) CreateEmployee(c *gin.Context) {
 func (e *employeeHandler) GetEmployee(c *gin.Context) {
 	id := c.Param("id")
 
-	employee, err := e.service.GetEmployee(id)
+	employee, err := e.service.GetEmployeeById(id)
 	if err != nil {
 		log.Error().Caller().Err(err).Send()
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

@@ -21,6 +21,37 @@ func NewEmployeeRepository(db *mongo.Database) interfaces.EmployeeRepository {
 	return &EmployeeRepository{db}
 }
 
+func (e *EmployeeRepository) GetAllEmployees() (*[]dtos.EmployeeDto, error) {
+	entities := []entities.EmployeeEntity{}
+
+	cursor, err := e.db.
+		Collection("employee").
+		Find(context.TODO(), bson.M{})
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	err = cursor.All(context.TODO(), &entities)
+	if err != nil {
+		log.Error().Caller().Err(err).Send()
+		return nil, err
+	}
+
+	allEmployees := []dtos.EmployeeDto{}
+	for _, entity := range entities {
+		dto, err := e.EntityToDto(&entity)
+		if err != nil {
+			log.Error().Caller().Err(err).Send()
+			return nil, err
+		}
+
+		allEmployees = append(allEmployees, *dto)
+	}
+
+	return &allEmployees, nil
+}
+
 func (e *EmployeeRepository) GetEmployee(id string) (*dtos.EmployeeDto, error) {
 	employee := entities.EmployeeEntity{}
 
@@ -89,15 +120,15 @@ func (e *EmployeeRepository) UpdateEmployee(id string, employee *dtos.UpdateEmpl
 	if employee.Name != nil {
 		update["name"] = employee.Name
 	}
+
 	if employee.Skills != nil {
 		update["skills"] = employee.Skills
 	}
+
 	if employee.AvailableHours != nil {
 		update["availableHours"] = employee.AvailableHours
 	}
-	if employee.AvailableDays != nil {
-		update["availableDays"] = employee.AvailableDays
-	}
+
 	update["updatedAt"] = time.Now()
 
 	_, err = e.db.
@@ -139,7 +170,6 @@ func (r *EmployeeRepository) DtoToEntity(dto *dtos.EmployeeDto) (entity *entitie
 		Name:           dto.Name,
 		Skills:         dto.Skills,
 		AvailableHours: dto.AvailableHours,
-		AvailableDays:  dto.AvailableDays,
 	}
 
 	if dto.ID != "" {
@@ -161,7 +191,6 @@ func (r *EmployeeRepository) EntityToDto(entity *entities.EmployeeEntity) (dto *
 		Name:           entity.Name,
 		Skills:         entity.Skills,
 		AvailableHours: entity.AvailableHours,
-		AvailableDays:  entity.AvailableDays,
 		CreatedAt:      entity.CreatedAt,
 		UpdatedAt:      entity.UpdatedAt,
 		DeletedAt:      entity.DeletedAt,

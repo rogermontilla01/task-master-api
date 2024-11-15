@@ -5,7 +5,8 @@ import (
 )
 
 type EmployeeService interface {
-	GetEmployee(id string) (*dtos.EmployeeDto, error)
+	GetAllEmployees() (*[]dtos.EmployeeDto, error)
+	GetEmployeeById(id string) (*dtos.EmployeeDto, error)
 	CreateEmployee(employee *dtos.EmployeeDto) (*dtos.EmployeeDto, error)
 	UpdateEmployee(id string, employee *dtos.UpdateEmployeeDto) (*dtos.UpdateEmployeeDto, error)
 	DeleteEmployee(id string) error

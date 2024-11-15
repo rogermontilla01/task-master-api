@@ -19,7 +19,19 @@ func NewEmployeeService(
 	}
 }
 
-func (e *EmployeeService) GetEmployee(id string) (employee *dtos.EmployeeDto, err error) {
+func (e *EmployeeService) GetAllEmployees() (*[]dtos.EmployeeDto, error) {
+	log.Info().Msg("Start getting employees")
+
+	employees, err := e.repository.GetAllEmployees()
+	if err != nil {
+		log.Error().Err(err).Msg("error getting employees")
+		return nil, err
+	}
+
+	return employees, nil
+}
+
+func (e *EmployeeService) GetEmployeeById(id string) (employee *dtos.EmployeeDto, err error) {
 	log.Info().Str("id", id).Msg("Get employee")
 
 	employeeDto, err := e.repository.GetEmployee(id)
